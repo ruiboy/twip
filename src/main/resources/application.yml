@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:twip
+  h2:
+    console:
+      enabled: true
+
+twip:
+  weather:
+    cityForecast:
+      appId: <your-app-id-here>
