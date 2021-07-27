@@ -4,14 +4,10 @@ and find the weather for each stop using openweathermap API 5 day forecast.
 
 # Running it
 
-Need to put a valid https://openweathermap.org/current APPID
-  in file `src/main/resources/application.yml`: 
-  
-```
-twip:
-  weather:
-    cityForecast:
-      appId: <your-app-id-here>
-```
+You must set system property `openweathermap.appId`.  
 
-Then run with `mvn spring-boot:run`
+Eg. Run with:
+
+```
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dopenweathermap.appId=<your-app-id-here>"
+```

@@ -4,8 +4,3 @@ spring:
   h2:
     console:
       enabled: true
-
-twip:
-  weather:
-    cityForecast:
-      appId: <your-app-id-here>

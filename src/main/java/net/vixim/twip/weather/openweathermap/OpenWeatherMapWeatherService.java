@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +15,7 @@ import net.vixim.twip.weather.WeatherService;
 
 /**
  * WeatherService impl using openweathermap API.
+ * Requires system property openweathermap.appId.
  */
 @Service
 class OpenWeatherMapWeatherService implements WeatherService
@@ -25,15 +23,16 @@ class OpenWeatherMapWeatherService implements WeatherService
   private static final String CITY_FORECAST_URL =
       "http://api.openweathermap.org/data/2.5/forecast?q={city}&APPID={appId}&units={units}";
 
-  @Value("${twip.weather.cityForecast.appId:NO-APPID-CONFIGURED}")
-  private String citeForecastAppId;
-
   private RestTemplate restTemplate;
+  private String appId;
 
   @Autowired
   public OpenWeatherMapWeatherService(RestTemplateBuilder restTemplateBuilder)
   {
     this.restTemplate = restTemplateBuilder.build();
+
+    this.appId = System.getProperty("openweathermap.appId");
+    Assert.hasText(appId, "System property openweathermap.appId not set");
   }
 
   public List<CityForecast> getCityForecast(String city)
@@ -47,18 +46,16 @@ class OpenWeatherMapWeatherService implements WeatherService
   {
     Map<String, String> parameters = new HashMap<>();
     parameters.put("city", city);
-    parameters.put("appId", citeForecastAppId);
+    parameters.put("appId", appId);
     parameters.put("units", "metric");
 
-    ResponseEntity<String> response = restTemplate.getForEntity(CITY_FORECAST_URL, String.class, parameters);
-
-    if (response.getStatusCode() == HttpStatus.ACCEPTED.OK)
+    try
     {
-      return response.getBody();
+      return restTemplate.getForObject(CITY_FORECAST_URL, String.class, parameters);
     }
-    else
+    catch (Exception e)
     {
-      throw new RuntimeException("Unable to get forecast for city: " + city + ", response: " + response.getBody());
+      throw new RuntimeException("Unable to get forecast for city: " + city, e);
     }
   }
 }
