@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/planner")
+@RequestMapping("/api/planner")
 public class TripController
 {
   private TripRepository tripRepository;
