@@ -4,10 +4,17 @@ and find the weather for each stop using openweathermap API 5 day forecast.
 
 # Running it
 
-You must set system property `openweathermap.appId`.  
-
-Eg. Run with:
+Backend: You must set system property `openweathermap.appId`.  Eg. Run with:
 
 ```
 mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dopenweathermap.appId=<your-app-id-here>"
 ```
+
+Frontend: Run with:
+
+```
+npm install
+npm start
+```
+
+Point your browser at `http://localhost:3000`

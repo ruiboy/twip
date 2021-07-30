@@ -1,5 +1,6 @@
 import React from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
+import {useSelector} from "react-redux";
 
 function Forecast(props) {
   const forecasts = props.forecasts;
@@ -17,7 +18,7 @@ function Forecast(props) {
         <TableBody>
           {forecasts.map((forecast) => (
             <TableRow key={forecast.id}>
-              <TableCell>{forecast.forTs}</TableCell>
+              <TableCell>{new Date(forecast.forTs).toLocaleString()}</TableCell>
               <TableCell>{forecast.temperature}</TableCell>
               <TableCell>{forecast.weatherMain}</TableCell>
             </TableRow>
@@ -28,8 +29,8 @@ function Forecast(props) {
   );
 }
 
-const TripTable = (props) => {
-  const trip = props.trip
+const TripTable = () => {
+  const trip = useSelector(state => state.trip);
 
   return (
     <TableContainer>
@@ -38,7 +39,8 @@ const TripTable = (props) => {
           <TableRow style={{backgroundColor: "beige"}}>
             <TableCell>City</TableCell>
             <TableCell>Country</TableCell>
-            <TableCell>Date of Arrival</TableCell>
+            <TableCell>Arrival Date</TableCell>
+            <TableCell>Departure Date</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -48,11 +50,12 @@ const TripTable = (props) => {
                 <TableCell>{row.cityName}</TableCell>
                 <TableCell>{row.countryCode}</TableCell>
                 <TableCell>{row.arriveTs}</TableCell>
+                <TableCell>{row.departTs}</TableCell>
               </TableRow>
               {row.forecasts &&
               <TableRow key={row.id + "_forecasts"}>
                 <TableCell>Weather Forecast for {row.cityName}</TableCell>
-                <TableCell colSpan={2}>
+                <TableCell colSpan={3}>
                   <Forecast forecasts={row.forecasts}/>
                 </TableCell>
               </TableRow>

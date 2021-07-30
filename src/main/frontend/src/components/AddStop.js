@@ -1,13 +1,34 @@
 import React, {useState} from "react";
 import {Button, Grid, TextField} from "@material-ui/core";
+import {useDispatch} from "react-redux";
+import {addStop} from "../actions/tripActions";
 
 const AddStop = (props) => {
-  const initialFormState = {cityName: '', arriveTs: ''}
+  const initialFormState = {cityName: "", arriveTs: "", departTs: ""}
   const [stop, setStop] = useState(initialFormState)
+
+  const dispatch = useDispatch();
 
   const handleInputChange = (event) => {
     const {name, value} = event.target
     setStop({...stop, [name]: value})
+  }
+
+  const submit = () => {
+    if (!stop.cityName || !stop.arriveTs) {
+      alert("Please enter city and arrival date.")
+      return
+    } else if (new Date(stop.arriveTs) <= new Date()) {
+      alert("You can't arrive before tomorrow.");
+      return
+    } else if (new Date(stop.departTs) < new Date(stop.arriveTs)) {
+      alert("You can't depart before you arrive.");
+      return
+    } else if (!stop.departTs) {
+      stop.departTs = stop.arriveTs;
+    }
+    dispatch(addStop(stop.cityName, stop.arriveTs, stop.departTs))
+    setStop(initialFormState)
   }
 
   return (
@@ -41,18 +62,22 @@ const AddStop = (props) => {
           />
         </Grid>
         <Grid item>
+          <TextField
+            type="date"
+            name="departTs"
+            value={stop.departTs}
+            label="Depart Date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={handleInputChange}
+          />
+        </Grid>
+        <Grid item>
           <Button
             variant="contained"
             color="primary"
-            onClick={event => {
-              event.preventDefault()
-              if (!stop.cityName || !stop.arriveTs) {
-                alert("Data missing!")
-                return
-              }
-              props.addStop(stop)
-              setStop(initialFormState)
-            }}>
+            onClick={submit}>
             Add City
           </Button>
         </Grid>
