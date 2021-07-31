@@ -1,10 +1,9 @@
 # TWIP
 A simple java / react app that allows you to plan a trip of multiple city stops
-and find the weather for each stop using openweathermap API 5 day forecast.
-
+and find the weather for each stop using https://openweathermap.org/forecast5 API.
 # Running it
 
-Backend: You must set system property `openweathermap.appId`.  Eg. Run with:
+Backend: You must set system property `openweathermap.appId`.  Run with:
 
 ```
 mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dopenweathermap.appId=<your-app-id-here>"
@@ -13,6 +12,7 @@ mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dopenweathermap.appId=<your
 Frontend: Run with:
 
 ```
+cd src/main/frontend
 npm install
 npm start
 ```

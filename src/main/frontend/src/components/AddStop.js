@@ -3,6 +3,8 @@ import {Button, Grid, TextField} from "@material-ui/core";
 import {useDispatch} from "react-redux";
 import {addStop} from "../actions/tripActions";
 
+// form for adding a stop to a trip
+
 const AddStop = (props) => {
   const initialFormState = {cityName: "", arriveTs: "", departTs: ""}
   const [stop, setStop] = useState(initialFormState)
@@ -16,10 +18,10 @@ const AddStop = (props) => {
 
   const submit = () => {
     if (!stop.cityName || !stop.arriveTs) {
-      alert("Please enter city and arrival date.")
+      alert("Please enter city and arrival date at minimum.")
       return
     } else if (new Date(stop.arriveTs) <= new Date()) {
-      alert("You can't arrive before tomorrow.");
+      alert("Your trip can't start before tomorrow.");
       return
     } else if (new Date(stop.departTs) < new Date(stop.arriveTs)) {
       alert("You can't depart before you arrive.");

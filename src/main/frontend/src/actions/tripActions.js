@@ -1,5 +1,6 @@
-import {ADD_STOPS} from "./types";
+import {ADD_STOPS, NEW_TRIP} from "./types";
 import WeatherService from "../services/WeatherService";
+import PlannerService from "../services/PlannerService";
 
 // will return null if can't find city, or error occurs
 const getForecasts = async (cityName) => {
@@ -88,6 +89,53 @@ export const addStop = (cityName, arriveTs, departTs) => async (dispatch) => {
     dispatch({
       type: ADD_STOPS,
       payload: stops,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const saveTrip = (name, trip) => async (dispatch) => {
+  try {
+    await PlannerService.saveTrip(name, trip);
+  } catch (err) {
+    alert("Problem saving trip");
+    console.log(err);
+  }
+};
+
+// will return null if can't find trip, or error occurs
+const getTrip = async (name) => {
+  try {
+    const results = await PlannerService.loadTrip(name);
+    return results.data;
+  } catch (err) {
+    return;
+  }
+}
+
+export const loadTrip = (name) => async (dispatch) => {
+  const trip = await getTrip(name);
+  if (!trip) {
+    alert("Could not find trip with name " + name);
+    return;
+  }
+
+  try {
+    dispatch({
+      type: NEW_TRIP,
+      payload: {...trip},
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const newTrip = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: NEW_TRIP,
+      payload: {},
     });
   } catch (err) {
     console.log(err);

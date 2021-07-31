@@ -2,6 +2,8 @@ import React from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import {useSelector} from "react-redux";
 
+// table for displaying a trip
+
 function Forecast(props) {
   const forecasts = props.forecasts;
 

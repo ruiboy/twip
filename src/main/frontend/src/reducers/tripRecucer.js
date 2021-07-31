@@ -1,4 +1,4 @@
-import {ADD_STOPS} from "../actions/types";
+import {ADD_STOPS, NEW_TRIP} from "../actions/types";
 
 const initialState =
   {
@@ -34,6 +34,10 @@ function tripReducer(trip = initialState, action) {
     case ADD_STOPS:
       const stops = payload;
       return (trip.stops ? {...trip, stops: [...trip.stops, ...stops]} : {...trip, stops: [...stops]})
+
+    case NEW_TRIP:
+      const newTrip = payload;
+      return (newTrip)
 
     default:
       return trip;
